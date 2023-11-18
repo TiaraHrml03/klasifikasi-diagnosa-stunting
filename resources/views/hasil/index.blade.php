@@ -26,7 +26,7 @@
                         </thead>
                         <tbody>
                             <?php $no = 1; ?>
-                                @foreach ($databalita as $item)
+                                @foreach ($data as $item)
                                     <tr data-id="{{ $item->id }}">
                                         <td>{{ $item->nama }}</td>
                                         <td>{{ $item->jk }}</td>

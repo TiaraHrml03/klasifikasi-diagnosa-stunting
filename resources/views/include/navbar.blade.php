@@ -4,7 +4,6 @@
         <img class="logo-compact" src="./assets/images/logo-text.png" alt="">
         <img class="brand-title" src="./assets/images/logo-text.png" alt="">
     </a>
-
     <div class="nav-control">
         <div class="hamburger">
             <span class="line"></span><span class="line"></span><span class="line"></span>
@@ -16,14 +15,15 @@
         <nav class="navbar navbar-expand">
             <div class="collapse navbar-collapse justify-content-between">
                 <div class="header-left">
-                    
+                
                 </div>
-
                 <ul class="navbar-nav header-right">
-                    
                     <li class="nav-item dropdown header-profile">
                         <a class="nav-link" href="#" role="button" data-toggle="dropdown">
                             <i class="mdi mdi-account"></i>
+                            @if(isset($user->email))
+                                {{ $user -> email }}
+                            @endif
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="../assets/app-profile.html" class="dropdown-item">

@@ -5,6 +5,8 @@ use App\Http\Controllers\DataBalitaController;
 use App\Http\Controllers\KlasifikasiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\LayoutController;
+use App\Http\Controllers\HasilController;
 use App\Models\Hasil;
 use App\Models\Klasifikasi;
 use Illuminate\Support\Facades\Route;
@@ -20,10 +22,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('login.index');
-});
-
 //data balita
 Route::get('balita',[DataBalitaController::class, 'index'])->name('balita');
 Route::get('balita/create', [DataBalitaController::class, 'create'])->name('balita.create');
@@ -34,11 +32,11 @@ Route::delete('balita/delete', [DataBalitaController::class, 'destroy'])->name('
 //Route::resources('data_balita', DataBalitaController::class);
 
 //dashboard
-Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard');
+Route::get('/',[DashboardController::class, 'index'])->name('dashboard');
 
 //klasifikasi naive bayes
 Route::get('klasifikasi',[KlasifikasiController::class, 'index'])->name('klasifikasi');
-// Route::post('klasifikasi', [KlasifikasiController::class, 'klasifikasi'])->name('klasifikasi');
+Route::post('klasifikasi', [KlasifikasiController::class, 'klasifikasi'])->name('klasifikasi');
 Route::post('klasifikasiaksi', [KlasifikasiController::class, 'klasifikasiaksi'])->name('klasifikasiaksi');
 
 // hasil klasifikasi
