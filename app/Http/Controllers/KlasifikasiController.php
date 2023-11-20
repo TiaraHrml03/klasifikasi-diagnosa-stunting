@@ -27,8 +27,7 @@ class KlasifikasiController extends Controller
                 'tinggi_badan' => $request->tinggi_badan,
             ]
         );
-        var_dump($input);
-        // session(['nama' => $request->nama]);
+        session(['nama' => $request->nama]);
         if ($input == true) {
             echo "<script>
             window.location = 'klasifikasi';
