@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Hasil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class HasilController extends Controller
 {
@@ -15,9 +16,9 @@ class HasilController extends Controller
      */
     public function index()
     {
-        $data['klasifikasi'] = DB::table('data_testing')->orderBy('nama', 'asc')->get(); //untuk mengambil semua data ditabel klasifikasi
+        $data = DB::table('data_testing')->orderBy('nama', 'asc')->get(); //untuk mengambil semua data ditabel klasifikasi
 
-        return view('hasil.index', $data);
+        return View::make('hasil.index')->with("data", $data);
     }
 
     /**
@@ -81,8 +82,12 @@ class HasilController extends Controller
      * @param  \App\Models\Hasil  $hasil
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Hasil $hasil)
+    public function destroy(Request $req)
     {
-        //
+        $data = Hasil::findOrFail($req->id);
+        $data->delete();
+        return json_encode([
+            'status' => 'success'
+        ]);
     }
 }
