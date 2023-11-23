@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="col-lg-12 margin-tb">
-        <a href="{{ route('hasil') }}" class="btn btn-primary btn-sm">Hasil Klasifikasi</a><br><br>
+        <a href="{{ route('hasil') }}" class="card-title">Hasil Klasifikasi</a><br><br>
     </div>
     <div class="col-lg-12">
         <div class="card">
@@ -20,8 +20,9 @@
                                 <th scope="col">Umur</th>
                                 <th scope="col">Berat Badan</th>
                                 <th scope="col">Tinggi Badan</th>
-                                {{-- <th scope="col">Status</th>
-                                <th scope="col">Action</th> --}}
+                                <th scope="col">Hasil</th>
+                                {{-- <th scope="col">Status</th> --}}
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -33,10 +34,10 @@
                                         <td>{{ $item->umur }}</td>
                                         <td>{{ $item->berat_badan }}</td>
                                         <td>{{ $item->tinggi_badan }}</td>
+                                        <td>{{ $item->hasil }}</td>
+                                        {{-- <td>{{ $hasil[0] > $hasil[1] ? 'Normal' : 'Stunting' }}</td> --}}
                                         {{-- <td>{{ $item->status }}</td> --}}
                                         <td>
-                                            <a href="{{ route('balita.edit', ['id' => $item->id]) }}" 
-                                                class="btn btn-success btn-sm">Edit</a>
                                             <button onclick="destroy({{ $item->id }})"
                                                 class="btn btn-danger btn-sm">Delete</button>
                                         </td>
@@ -49,13 +50,13 @@
                                             if (confirm('Anda yakin ingin menghapus data?')) {
                                                 $.ajax({
                                                     type: 'delete',
-                                                    url: "{{ route('balita.delete') }}?id=" + id,
+                                                    url: "{{ route('hasil.delete') }}?id=" + id,
                                                     data: {
                                                         "_token": "{{ csrf_token() }}",
                                                         "id": id,
                                                     },
                                                     success: function(response) {
-                                                        $(`tr[databalita-id=${id}]`).remove();
+                                                        $(`tr[hasil-id=${id}]`).remove();
                                                         window.location?.reload()
                                                     }
                                                 });

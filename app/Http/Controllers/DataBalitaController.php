@@ -12,7 +12,7 @@ class DataBalitaController extends Controller
     
     public function index()
     {
-        // $databalita = DataBalita::paginate('20');
+        // $databalita = DataBalita::paginate('20'); test
         $databalita = DataBalita::all();
         return view('data_balita.index', compact('databalita'));
     }

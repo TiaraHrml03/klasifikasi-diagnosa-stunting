@@ -23,7 +23,7 @@ class CreateDataTestingTable extends Migration
             $table->string('tinggi_badan');
         
         });
-    }
+    } //
 
     /**
      * Reverse the migrations.

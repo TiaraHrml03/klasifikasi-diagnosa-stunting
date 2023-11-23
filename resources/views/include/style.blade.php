@@ -8,3 +8,8 @@
     <link rel="stylesheet" href="../assets/vendor/owl-carousel/css/owl.theme.default.min.css">
     <link href="../assets/vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
     <link href="../assets/css/style.css" rel="stylesheet">
+    <style>
+        .content-body{
+            margin-left:300px !important;
+        }
+                </style>

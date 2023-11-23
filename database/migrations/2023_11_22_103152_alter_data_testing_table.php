@@ -14,7 +14,7 @@ class AlterDataTestingTable extends Migration
     public function up(): void
     {
         Schema::table('data_testing', function (Blueprint $table) {
-            $table->string('hasil');
+            $table->string('hasil'); //
     });
 }
 

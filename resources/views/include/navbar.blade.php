@@ -1,8 +1,9 @@
 <div class="nav-header">
     <a href="#" class="brand-logo">
-        <img class="logo-abbr" src="./assets/images/logo.png" alt="">
+        {{-- <img class="logo-abbr" src="./assets/images/logo.png" alt="">
         <img class="logo-compact" src="./assets/images/logo-text.png" alt="">
-        <img class="brand-title" src="./assets/images/logo-text.png" alt="">
+        <img class="brand-title" src="./assets/images/logo-text.png" alt=""> --}}
+        <h3>STUNTING</h3>
     </a>
     <div class="nav-control">
         <div class="hamburger">
@@ -25,7 +26,7 @@
                                 {{ $user -> email }}
                             @endif
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right">
+                        {{-- <div class="dropdown-menu dropdown-menu-right">
                             <a href="../assets/app-profile.html" class="dropdown-item">
                                 <i class="icon-user"></i>
                                 <span class="ml-2">Profile </span>
@@ -38,7 +39,7 @@
                                 <i class="icon-key"></i>
                                 <span class="ml-2">Logout </span>
                             </a>
-                        </div>
+                        </div> --}}
                     </li>
                 </ul>
             </div>

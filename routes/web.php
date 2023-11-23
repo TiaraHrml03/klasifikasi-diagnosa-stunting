@@ -9,6 +9,7 @@ use App\Http\Controllers\LayoutController;
 use App\Http\Controllers\HasilController;
 use App\Models\Hasil;
 use App\Models\Klasifikasi;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,7 +33,10 @@ Route::delete('balita/delete', [DataBalitaController::class, 'destroy'])->name('
 //Route::resources('data_balita', DataBalitaController::class);
 
 //dashboard
-Route::get('/',[DashboardController::class, 'index'])->name('dashboard');
+Route::get('/', function () {
+    return redirect()->to('/dashboard');
+});
+Route::get('dashboard',[DashboardController::class, 'index'])->name('dashboard');
 
 //klasifikasi naive bayes
 Route::get('klasifikasi',[KlasifikasiController::class, 'index'])->name('klasifikasi');
@@ -41,6 +45,7 @@ Route::post('klasifikasiaksi', [KlasifikasiController::class, 'klasifikasiaksi']
 
 // hasil klasifikasi
 Route::get('hasil',[HasilController::class, 'index'])->name('hasil');
+Route::delete('hasil/delete', [HasilController::class, 'destroy'])->name('hasil.delete');
 
 //login
 Route::get('login', [LoginController::class, 'index'])->name('login');

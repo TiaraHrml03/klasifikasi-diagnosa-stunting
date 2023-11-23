@@ -24,28 +24,46 @@
                                     <div class="form-group row">
                                         <label class="col-lg-4 col-form-label">Jenis Kelamin</label>
                                         <div class="col-lg-6">
-                                            <input type="text" class="form-control" name="jk">
+                                            <select type="text" class="form-control form-select form-select-lg mb-3" aria-label="Default select example" name="jk">
+                                                <option selected disabled>--</option>
+                                                <option value="L">L</option>
+                                                <option value="P">P</option>
+                                            </select>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-lg-4 col-form-label">Umur</label>
                                         <div class="col-lg-6">
-                                            <input type="text" class="form-control" name="umur">
+                                            <select type="text" class="form-control form-select form-select-lg mb-3" aria-label="Default select example" name="umur">
+                                                <option selected disabled>--</option>
+                                                <option value="Bayi">Bayi</option>
+                                                <option value="Anak">Anak</option>
+                                            </select>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-lg-4 col-form-label">Berat Badan</label>
                                         <div class="col-lg-6">
-                                            <input type="text" class="form-control" name="berat_badan">
+                                            <select type="text" class="form-control form-select form-select-lg mb-3" aria-label="Default select example" name="berat_badan">
+                                                <option selected disabled>--</option>
+                                                <option value="Rendah">Rendah</option>
+                                                <option value="Normal">Normal</option>
+                                                <option value="Lebih">Lebih</option>
+                                            </select>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-lg-4 col-form-label">Tinggi Badan</label>
                                         <div class="col-lg-6">
-                                            <input type="text" class="form-control" name="tinggi_badan">
+                                            <select type="text" class="form-control form-select form-select-lg mb-3" aria-label="Default select example" name="tinggi_badan">
+                                                <option selected disabled>--</option>
+                                                <option value="Pendek">Pendek</option>
+                                                <option value="Normal">Normal</option>
+                                                <option value="Tinggi">Tinggi</option>
+                                            </select>
                                         </div>
                                     </div>
 
