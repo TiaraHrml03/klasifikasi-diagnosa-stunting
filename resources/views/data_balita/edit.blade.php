@@ -1,10 +1,12 @@
 @extends('layout.app')
-@section('title', 'Edit Data Balita')
+@section('title', 'Data Balita')
 
 @section('content')
-
-    <form action="{{ route('balita.update', ['id' => $databalita->id]) }}" method="POST" enctype="multipart/form-data">
-
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Home</li>
+        <li class="breadcrumb-item active">Edit Data Balita</li>
+    </ol>
+    <form action="{{ route('balita.update', ['balita_id' => $databalita->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="content">
@@ -40,11 +42,10 @@
                 </div>
 
                 <div class="form-group">
-                    <a href="{{ route('balita') }}" class="btn btn-primary btn-sm">Kembali</a>
+                    <a href="{{ route('balita.index') }}" class="btn btn-primary btn-sm">Kembali</a>
                     <button type="submit" class="btn btn-success">Update</button>
                 </div>
             </div>
         </div>
     </form>
-
 @endsection

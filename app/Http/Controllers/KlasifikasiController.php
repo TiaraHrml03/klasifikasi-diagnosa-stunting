@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Klasifikasi;
+use App\Models\DataBalita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\Console\Input\Input;
+use Illuminate\Support\Facades\Log;
+
+use function PHPSTORM_META\map;
 
 class KlasifikasiController extends Controller
 {
@@ -15,23 +18,39 @@ class KlasifikasiController extends Controller
         return view('klasifikasi.index');
     }
 
+    public function list()
+    {
+        $data = Klasifikasi::paginate(20);
+        return view('klasifikasi.list', compact('data'));
+    }
+
 
     public function klasifikasiaksi(Request $request)
     {
-        $input = DB::table('data_testing')->insert(
-            [
-                'nama' => $request->nama,
-                'jk' => $request->jk,
-                'umur' => $request->umur,
-                'berat_badan' => $request->berat_badan,
-                'tinggi_badan' => $request->tinggi_badan,
-            ]
-        );
-        session(['nama' => $request->nama]);
-        if ($input == true) {
-            echo "<script>
-            window.location = 'klasifikasi';
-            </script>";
+        $this->validate($request, [
+            'nama' => 'required',
+            'jk' => 'required',
+            'umur' => 'required',
+            'berat_badan' => 'required',
+            'tinggi_badan' => 'required',
+        ]);
+
+        $status = $this->klasifikasi($request->jk, $request->umur, $request->berat_badan, $request->tinggi_badan);
+
+        $data = Klasifikasi::create([
+            'nama' => $request->nama,
+            'jk' => $request->jk,
+            'umur' => $request->umur,
+            'berat_badan' => $request->berat_badan,
+            'tinggi_badan' => $request->tinggi_badan,
+            'status' => $status
+        ]);
+
+
+        // session(['nama' => $request->nama]);
+
+        if ($data) {
+            return redirect()->route('klasifikasi.list')->with('pesan', 'data berhasil ditambahkan');
         } else {
             echo "<script>
             alert('Data gagal diinput, masukkan kembali data dengan benar');
@@ -41,19 +60,14 @@ class KlasifikasiController extends Controller
     }
 
 
-    public function klasifikasi()
+    private function klasifikasi($jk, $umur, $berat_badan, $tinggi_badan)
     {
-        $data = DB::table('data_testing')->where(['nama' => session()->get('nama')])->first();
-        // dd($data);
-
         $input = [
-            "jk" => $data->jk,
-            "umur" => $this->clasifyUMUR($data->umur),
-            "berat_badan" => $this->clasifyBB($data->berat_badan),
-            "tinggi_badan" => $this->clasifyTB($data->tinggi_badan),
+            "jk" => $jk,
+            "umur" => $umur,
+            "berat_badan" => $berat_badan,
+            "tinggi_badan" => $tinggi_badan,
         ];
-
-        $table_data_balita = "data_balita";
 
         $kriteria = [
             "jk",
@@ -62,126 +76,70 @@ class KlasifikasiController extends Controller
             "tinggi_badan"
         ];
 
-        $hasil = "keterangan";
-        $hasil_value = ["Normal", "Stunting"];
+        $hasil = "status";
+        $hasil_value = ["NORMAL", "STUNTING"];
 
-        $select = implode(',', [...$kriteria, $hasil]);
-        $data_balita = DB::table($table_data_balita)->selectRaw($select)->get();
-
-        $data_balita_normal = [];
-        foreach ($data_balita as $key => $value) {
-            $value->umur = $this->clasifyUMUR($value->umur);
-            $value->berat_badan = $this->clasifyBB($value->berat_badan);
-            $value->tinggi_badan = $this->clasifyTB($value->tinggi_badan);
-            $data_balita_normal[] = $value;
+        $data_train_normal = [];
+        foreach (DataBalita::all() as $value) {
+            $data = [];
+            $data['jk'] = $value->jk;
+            $data['umur'] = $value->umur;
+            $data['berat_badan'] = $value->berat_badan;
+            $data['tinggi_badan'] = $value->tinggi_badan;
+            $data['status'] = $value->status;
+            $data_train_normal[] = $data;
         }
 
         $prob_true = [];
         $prob_false = [];
-        foreach ($kriteria as $key =>$value) {
-            $prob_true[] = $this->getProbabilities($data_balita_normal, [
+        foreach ($kriteria as $key => $value) {
+            $prob_true[] = $this->getProbabilities($data_train_normal, [
                 $value => $input[$value],
                 $hasil => $hasil_value[1]
-            ]) / count($data_balita_normal);
+            ]);
 
-            $prob_false[] = $this->getProbabilities($data_balita_normal, [
+            $prob_false[] = $this->getProbabilities($data_train_normal, [
                 $value => $input[$value],
                 $hasil => $hasil_value[0]
-            ]) / count($data_balita_normal);
+            ]);
         }
 
-        $prob_hasil_true = $this->getProbabilities($data_balita_normal, [
+        $prob_hasil_true = $this->getProbabilities($data_train_normal, [
             $hasil => $hasil_value[1]
-        ]) / count($data_balita_normal);
+        ]);
 
-        $prob_hasil_false = $this->getProbabilities($data_balita_normal, [
+        $prob_hasil_false = $this->getProbabilities($data_train_normal, [
             $hasil => $hasil_value[0]
-        ]) / count($data_balita_normal);
+        ]);
 
         $hasil = [
             number_format(array_product($prob_true) * $prob_hasil_true, 10),
             number_format(array_product($prob_false) * $prob_hasil_false, 10)
         ];
 
-        return view('klasifikasi.index', compact('hasil'));
-
+        Log::debug('Hasil = ', $hasil);
+        $status = ($hasil[0] >= $hasil[1]) ? $hasil_value[1] : $hasil_value[0];
+        
+        return $status;
     }
 
-    private function clasifyUMUR($value)
-    {
-        if($value < 12){
-            return "bayi";
-        }else if($value > 12){
-            return "anak";
-        }
-        return "no clasify";
-        // if ($value < 12) return "Bayi";
-        // if ($value > 12) return "Anak";
-    }
-
-    private function clasifyBB($value)
-    {
-        if($value < 2.5){
-            return "rendah";
-        }
-        else if($value >= 2.5  && $value <=4){
-            return "normal";
-        }
-        return "lebih";
-        // if ($value < 2.5) return "Rendah";
-        // if ($value < 4) return "Normal";
-        // if ($value > 4) return "Lebih";
-    }
-
-    private function clasifyTB($value)
-    {
-        if($value < 85){
-            return "pendek";
-        }
-        else if($value >= 85 && $value <=110){
-            return "normal";
-        }
-        return "Tinggi";
-        // if ($value < 85) return "Pendek";
-        // if ($value < 110) return "Normal";
-        // if ($value > 110) return "Tinggi";
-    }
-
+    /**
+     * $data - data balita normal,
+     * $rules - data yang akan diuji
+     */
     private function getProbabilities($data, $rules)
     {
         $hasil = 0;
-        foreach ($data as $x => $v) {
+        foreach ($data as $v) {
             $iya = 0;
             foreach ($rules as $y => $value) {
-                if ($v-$y == $value) $iya += 1;
+                if ($v[$y] == $value) $iya += 1;
                 else $iya -= 1;
             }
             $hasil += ($iya == count($rules)) ? 1 : 0;
         }
-        return $hasil;
-    }
-
-
-    public function show(Klasifikasi $klasifikasi)
-    {
-        //
-    }
-
-    
-    public function edit(Klasifikasi $klasifikasi)
-    {
-        //
-    }
-
-    
-    public function update(Request $request, Klasifikasi $klasifikasi)
-    {
-        //
-    }
-
-    
-    public function destroy(Klasifikasi $klasifikasi)
-    {
-        //
+        Log::debug($rules);
+        Log::debug($hasil);
+        return $hasil / count($data);
     }
 }

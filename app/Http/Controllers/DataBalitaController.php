@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\DataBayiJob;
 use App\Models\DataBalita;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 
 class DataBalitaController extends Controller
 {
-    
+
     public function index()
     {
         $databalita = DataBalita::paginate('20');
         return view('data_balita.index', compact('databalita'));
     }
 
-    
+
     public function create()
     {
         return view('data_balita.create');
@@ -24,7 +23,16 @@ class DataBalitaController extends Controller
 
     public function store(Request $request)
     {
-        $input = DataBalita::insert([
+        $this->validate($request, [
+            'nama' => 'required',
+            'jk' => 'required',
+            'umur' => 'required',
+            'berat_badan' => 'required',
+            'tinggi_badan' => 'required',
+            'status' => 'required',
+        ]);
+        
+        $input = DataBalita::create([
             'nama' => $request->nama,
             'jk' => $request->jk,
             'umur' => $request->umur,
@@ -33,49 +41,67 @@ class DataBalitaController extends Controller
             'status' => $request->status,
         ]);
         if ($input) {
-            return redirect()->route('balita')->with('pesan', 'Data berhasil disimpan');
+            return redirect()->route('balita.index')->with('pesan', 'Data berhasil disimpan');
         } else {
             echo "<script>
             alert('Data gagal diinput, masukkan kembali data dengan benar');
-            window.location = '" . route('balita') . "';
+            window.location = '" . route('balita.index') . "';
             </script>";
         }
     }
 
-    // public function show(DataBalita $dataBalita)
-    // {
-    //     //
-    // }
-
-    public function edit(Request $req)
+    public function massUploadForm()
     {
-        $databalita = DB::table('data_balita')
-            ->where('id', $req->id)
-            ->first();
-            // dd($databalita);
+        return view('data_balita.bulk');
+    }
+
+    public function massUpload(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '-data-bayi.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/uploads', $filename);
+            DataBayiJob::dispatch($filename);
+            return redirect()->back()->with(['success' => 'Import Data Bayi Dijadwalkan!']);
+        }
+    }
+
+    public function edit($balita_id)
+    {
+        $databalita = DataBalita::find($balita_id);
         return view('data_balita.edit', compact('databalita'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $update = DB::table('data_balita')
-            ->where('id', $request->id)
-            ->update([
-                'nama' => $request->nama,
-                'jk' => $request->jk,
-                'umur' => $request->umur,
-                'berat_badan' => $request->berat_badan,
-                'tinggi_badan' => $request->tinggi_badan,
-                'status' => $request->status,
-            ]);
-        if ($update) {
-            return redirect(route('balita'))->with('pesan', 'Data berhasil diupdate');
-        } else {
-            echo "<script>
-            alert('Data gagal diupdate, masukkan kembali data dengan benar');
-            window.location = '/data_balita.index';
-            </script>";
-        }
+        $this->validate($request, [
+            'name' => 'required|string|max:200|unique:nama,jk,umur,berat_badan,tinggi_badan,status,' . $id
+        ]);
+
+        $data = DataBalita::find($id);
+        $data->update([
+            'nama' => $request->nama,
+            'jk' => $request->jk,
+            'umur' => $request->umur,
+            'berat_badan' => $request->berat_badan,
+            'tinggi_badan' => $request->tinggi_badan,
+            'status' => $request->status,
+        ]);
+
+
+        return redirect(route('balita.index'))->with('pesan', 'Data berhasil diupdate');
+        // if ($update) {
+
+        // } else {
+        //     echo "<script>
+        //     alert('Data gagal diupdate, masukkan kembali data dengan benar');
+        //     window.location = '/data_balita.index';
+        //     </script>";
+        // }
     }
 
     public function destroy(Request $req)
@@ -85,6 +111,6 @@ class DataBalitaController extends Controller
         return json_encode([
             'status' => 'success'
         ]);
-        //return redirect()->route('data_balita')->with('success', 'Data Balita berhasil dihapus');
+        // return redirect()->route('data_balita')->with('success', 'Data Balita berhasil dihapus');
     }
 }

@@ -1,32 +1,20 @@
 @extends('layout.app')
-@section('title', 'Data Balita')
+@section('title', 'List Klasifikasi')
 
 @section('content')
     <div class="col-lg-12 margin-tb">
-        <div class="row-lg-10">
-            <a href="{{ route('balita.create') }}" class="btn btn-primary btn-sm">Tambah Data Balita</a>
-            <a href="{{ route('balita.bulk') }}" class="btn btn-secondary btn-sm">Import Data Balita</a>
-            <br><br>
-        </div>
+        <a href="{{ route('klasifikasi') }}" class="btn btn-primary btn-sm">Hasil Klasifikasi</a><br><br>
     </div>
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Data Balita</h4>
+                <h4 class="card-title">Data Testing</h4>
             </div>
             <div class="card-body">
-                @if (session('success'))
-                    <div class="alert alert-success">{{ session('success') }}</div>
-                @endif
-
-                @if (session('error'))
-                    <div class="alert alert-danger">{{ session('error') }}</div>
-                @endif
                 <div class="table-responsive">
                     <table class="table table-bordered verticle-middle table-responsive-sm">
                         <thead>
                             <tr>
-                                <th scope="col">No.</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Jenis Kelamin</th>
                                 <th scope="col">Umur</th>
@@ -38,9 +26,8 @@
                         </thead>
                         <tbody>
                             <?php $no = 1; ?>
-                            @forelse ($databalita as $item)
+                            @foreach ($data as $item)
                                 <tr data-id="{{ $item->id }}">
-                                    <td>{{ ($databalita->currentpage() - 1) * $databalita->perPage() + $loop->iteration }}</td>
                                     <td>{{ $item->nama }}</td>
                                     <td>{{ $item->jk }}</td>
                                     <td>{{ $item->umur }}</td>
@@ -62,7 +49,7 @@
                                         if (confirm('Anda yakin ingin menghapus data?')) {
                                             $.ajax({
                                                 type: 'delete',
-                                                url: "{{ route('balita.destroy', ['balita_id' =>" + id + "]) }}",
+                                                url: "{{ route('balita.destroy', ['balita_id' => " . id . "]) }}",
                                                 data: {
                                                     "_token": "{{ csrf_token() }}",
                                                     "id": id,
@@ -85,15 +72,22 @@
                                                 class="fa fa-close color-danger"></i></a></span>
                                 </td>
                             </tr> --}}
-                            @empty
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
-                </div>
-                <div class="row">
-                    {!! $databalita->links() !!}
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Favicon icon -->
+    <link rel="icon" type="../assets/image/png" sizes="16x16" href="../assets/images/favicon.png">
+    <!-- Custom Stylesheet -->
+    <link href="../assets/css/style.css" rel="stylesheet">
+
+    <!-- Required vendors -->
+    <script src="./assets/vendor/global/global.min.js"></script>
+    <script src="./assets/js/quixnav-init.js"></script>
+    <script src="./assets/js/custom.min.js"></script>
+
 @endsection

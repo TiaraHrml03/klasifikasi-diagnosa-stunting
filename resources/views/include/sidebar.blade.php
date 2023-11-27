@@ -8,12 +8,12 @@
             </li>
             
             <li class="nav-label">Data</li>
-            <li><a  href="{{route('balita')}}" aria-expanded="false"><i
+            <li><a  href="{{route('balita.index')}}" aria-expanded="false"><i
                 class="icon icon-layout-25" ></i><span class="nav-text" href="data_balita/index.php">Data Balita</span></a>
                 
             </li>
             
-            <li><a  href="{{route('hasil')}}" aria-expanded="false"><i
+            <li><a  href="{{route('klasifikasi.list')}}" aria-expanded="false"><i
                 class="icon icon-layout-25"></i><span class="nav-text">Hasil Klasifikasi</span></a>
         
             </li>

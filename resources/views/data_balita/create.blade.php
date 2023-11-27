@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <form action="{{ route('balita.simpan') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('balita.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="content">
             <div class="col-sm-6">

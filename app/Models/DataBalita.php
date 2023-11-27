@@ -12,6 +12,6 @@ class DataBalita extends Model
     //protected $primaryKey = 'id';
     public $timestamps = false;
     protected $fillable = [
-        'nama', 'jk', 'umur', 'berat_badan', 'tinggi_berat', 'status'
+        'nama', 'jk', 'umur', 'berat_badan', 'tinggi_badan', 'status'
     ];
 }
