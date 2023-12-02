@@ -26,7 +26,7 @@
                                 <th scope="col">Berat Badan</th>
                                 <th scope="col">Tinggi Badan</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Timestamp</th>
+                                {{-- <th scope="col">Timestamp</th> --}}
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -41,10 +41,10 @@
                                     <td>{{ $item->berat_badan }}</td>
                                     <td>{{ $item->tinggi_badan }}</td>
                                     <td>{{ $item->status }}</td>
-                                    <td>{{ date('d F Y H:i A', strtotime($item->updated_at)) }}</td>
+                                    {{-- <td>{{ date('d F Y H:i A', strtotime($item->updated_at)) }}</td> --}}
                                     <td>
-                                        <a href="{{ route('balita.edit', ['balita_id' => $item->id]) }}"
-                                            class="btn btn-success btn-sm">Edit</a>
+                                        {{-- <a href="{{ route('balita.edit', ['balita_id' => $item->id]) }}"
+                                            class="btn btn-success btn-sm">Edit</a> --}}
                                         <button onclick="destroy({{ $item->id }})"
                                             class="btn btn-danger btn-sm">Delete</button>
                                     </td>

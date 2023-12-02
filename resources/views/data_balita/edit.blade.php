@@ -90,9 +90,9 @@
                         <select name="status" class="form-control">
                             <option selected disabled>--</option>
                             <option value="NORMAL" {{ $databalita->status == 'NORMAL' ? 'selected' : '' }}>
-                                Laki-Laki </option>
+                                Normal </option>
                             <option value="STUNTING" {{ $databalita->status == 'STUNTING' ? 'selected' : '' }}>
-                                Perempuan</option>
+                                Stunting </option>
                         </select>
                         <p class="text-danger">{{ $errors->first('status') }}</p>
                     </div>
