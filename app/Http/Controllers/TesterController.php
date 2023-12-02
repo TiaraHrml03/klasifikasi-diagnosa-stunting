@@ -25,7 +25,8 @@ class TesterController extends Controller
     public function process(Request $request)
     {
         $hasil = [];
-        $data_latih = DataBalita::limit($request->count - $request->training)->get();
+        $data_testing = $request->total_data - $request->training;
+        $data_latih = DataBalita::skip($request->training)->limit($data_testing)->get();
         $naiveBayes = new NaiveBayes();
 
         foreach ($data_latih as $value) {

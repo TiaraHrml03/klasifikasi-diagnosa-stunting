@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\DataBayiJob;
 use App\Models\DataBalita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DataBalitaController extends Controller
 {
@@ -24,15 +25,15 @@ class DataBalitaController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nama' => 'required',
+            'nama' => 'required|string|max:200',
             'jk' => 'required',
             'umur' => 'required',
             'berat_badan' => 'required',
             'tinggi_badan' => 'required',
             'status' => 'required',
         ]);
-        
-        $input = DataBalita::create([
+
+        DataBalita::create([
             'nama' => $request->nama,
             'jk' => $request->jk,
             'umur' => $request->umur,
@@ -40,14 +41,7 @@ class DataBalitaController extends Controller
             'tinggi_badan' => $request->tinggi_badan,
             'status' => $request->status,
         ]);
-        if ($input) {
-            return redirect()->route('balita.index')->with('pesan', 'Data berhasil disimpan');
-        } else {
-            echo "<script>
-            alert('Data gagal diinput, masukkan kembali data dengan benar');
-            window.location = '" . route('balita.index') . "';
-            </script>";
-        }
+        return redirect()->route('balita.index')->with('pesan', 'Data berhasil disimpan');
     }
 
     public function massUploadForm()
@@ -73,13 +67,19 @@ class DataBalitaController extends Controller
     public function edit($balita_id)
     {
         $databalita = DataBalita::find($balita_id);
+        Log::debug($databalita);
         return view('data_balita.edit', compact('databalita'));
     }
 
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required|string|max:200|unique:nama,jk,umur,berat_badan,tinggi_badan,status,' . $id
+            'nama' => 'required|string|max:200',
+            'jk' => 'required',
+            'umur' => 'required',
+            'berat_badan' => 'required',
+            'tinggi_badan' => 'required',
+            'status' => 'required',
         ]);
 
         $data = DataBalita::find($id);
@@ -92,17 +92,13 @@ class DataBalitaController extends Controller
             'status' => $request->status,
         ]);
 
-
-        return redirect(route('balita.index'))->with('pesan', 'Data berhasil diupdate');
+        return redirect(route('balita.index'))->with('success', 'Data berhasil diupdate');
     }
 
-    public function destroy(Request $req)
+    public function destroy($id)
     {
-        $databalita = DataBalita::findOrFail($req->id);
+        $databalita = DataBalita::findOrFail($id);
         $databalita->delete();
-        return json_encode([
-            'status' => 'success'
-        ]);
-        // return redirect()->route('data_balita')->with('success', 'Data Balita berhasil dihapus');
+        return redirect(route('balita.index'))->with('success', 'Data Balita berhasil dihapus');
     }
 }
