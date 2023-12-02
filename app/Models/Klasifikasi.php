@@ -9,4 +9,7 @@ class Klasifikasi extends Model
 {
     use HasFactory;
     protected $table = 'data_testing';
+    protected $fillable = [
+        'nama', 'jk', 'umur', 'berat_badan', 'tinggi_badan', 'status'
+    ];
 }
