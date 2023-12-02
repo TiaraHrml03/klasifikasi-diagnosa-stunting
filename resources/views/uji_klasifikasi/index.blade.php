@@ -24,9 +24,9 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Jumlah Data Uji</label>
+                            <label class="col-sm-4 col-form-label">Jumlah Data Latih</label>
                             <div class="col-sm-6">
-                                <input name="testing" class="form-control" required>
+                                <input name="training" class="form-control" required>
                             </div>
                         </div>
 

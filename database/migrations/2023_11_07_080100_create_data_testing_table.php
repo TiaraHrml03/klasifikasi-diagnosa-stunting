@@ -17,7 +17,7 @@ class CreateDataTestingTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('nama');
-            $table->string('jk');
+            $table->enum('jk', ['L', 'P']);
             $table->string('umur');
             $table->string('berat_badan');
             $table->string('tinggi_badan');

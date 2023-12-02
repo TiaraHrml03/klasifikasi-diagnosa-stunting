@@ -94,14 +94,6 @@ class DataBalitaController extends Controller
 
 
         return redirect(route('balita.index'))->with('pesan', 'Data berhasil diupdate');
-        // if ($update) {
-
-        // } else {
-        //     echo "<script>
-        //     alert('Data gagal diupdate, masukkan kembali data dengan benar');
-        //     window.location = '/data_balita.index';
-        //     </script>";
-        // }
     }
 
     public function destroy(Request $req)
