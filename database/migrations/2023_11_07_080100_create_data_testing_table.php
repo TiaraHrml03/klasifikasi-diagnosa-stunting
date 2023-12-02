@@ -21,9 +21,9 @@ class CreateDataTestingTable extends Migration
             $table->string('umur');
             $table->string('berat_badan');
             $table->string('tinggi_badan');
-        
+            $table->string('status');
         });
-    } //
+    }
 
     /**
      * Reverse the migrations.
