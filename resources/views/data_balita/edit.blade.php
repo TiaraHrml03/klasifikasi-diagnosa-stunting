@@ -27,9 +27,9 @@
                     <div class="col-lg-6">
                         <select name="jk" class="form-control">
                             <option selected disabled>--</option>
-                            <option value="L" {{ $databalita->jk == 'L' ? 'selected' : '' }}>
+                            <option value="L" {{ $databalita->jk === 'Laki-Laki' ? 'selected' : '' }}>
                                 Laki-Laki </option>
-                            <option value="P" {{ $databalita->jk == 'P' ? 'selected' : '' }}>
+                            <option value="P" {{ $databalita->jk === 'Perempuan' ? 'selected' : '' }}>
                                 Perempuan</option>
                         </select>
                         <p class="text-danger">{{ $errors->first('jk') }}</p>

@@ -19,7 +19,8 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Total Data</label>
                             <div class="col-sm-6">
-                                <input name="total-data" class="form-control" value="{{ $data }}" disabled>
+                                <input name="total_data" class="form-control" value="{{ $data }}" disabled>
+                                <input type="hidden" name="total_data" class="form-control" value="{{ $data }}">
                             </div>
                         </div>
 
