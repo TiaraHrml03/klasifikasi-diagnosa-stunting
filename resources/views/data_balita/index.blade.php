@@ -57,7 +57,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <a href="{{ route('balita.edit', $item->id) }}"
-                                                class="btn btn-warning btn-sm">Edit</a>
+                                                button type="submit" class="btn btn-success">Edit</a>
                                             <button class="btn btn-danger btn-sm">Delete</button>
                                         </form>
 
