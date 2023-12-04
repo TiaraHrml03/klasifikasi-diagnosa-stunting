@@ -14,7 +14,7 @@
                     </div>
                     <div class="card-body">
                         <div class="form-validation">
-                            <form action="{{ route('klasifikasiaksi') }}" method="post">
+                            <form action="{{ route('klasifikasi.process') }}" method="post">
                                 @csrf
                                 <div class="row">
                                     <div class="col-xl-6">
@@ -108,15 +108,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Favicon icon -->
-    <link rel="icon" type="../assets/image/png" sizes="16x16" href="../assets/images/favicon.png">
-    <!-- Custom Stylesheet -->
-    <link href="../assets/css/style.css" rel="stylesheet">
-
-    <!-- Required vendors -->
-    <script src="./assets/vendor/global/global.min.js"></script>
-    <script src="./assets/js/quixnav-init.js"></script>
-    <script src="./assets/js/custom.min.js"></script>
-
 @endsection

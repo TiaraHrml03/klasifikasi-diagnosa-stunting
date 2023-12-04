@@ -45,8 +45,9 @@ Route::post('balita/bulk', [DataBalitaController::class, 'massUpload'])->name('b
 //klasifikasi naive bayes
 Route::get('klasifikasi', [KlasifikasiController::class, 'list'])->name('klasifikasi.list');
 Route::get('klasifikasi/proses', [KlasifikasiController::class, 'index'])->name('klasifikasi');
-// Route::post('klasifikasi', [KlasifikasiController::class, 'klasifikasi'])->name('klasifikasi');
-Route::post('klasifikasiaksi', [KlasifikasiController::class, 'klasifikasiaksi'])->name('klasifikasiaksi');
+Route::delete('klasifikasi/{id}', [KlasifikasiController::class, 'destroy'])->name('klasifikasi.destroy');
+Route::post('klasifikasi', [KlasifikasiController::class, 'klasifikasiaksi'])->name('klasifikasi.process');
+Route::get('klasifikasi/prune', [KlasifikasiController::class, 'prune'])->name('klasifikasi.destroyall');
 
 Route::get('uji', [TesterController::class, 'index'])->name('uji.index');
 Route::post('uji', [TesterController::class, 'process'])->name('uji.process');
