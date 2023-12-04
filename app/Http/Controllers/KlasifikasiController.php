@@ -40,7 +40,7 @@ class KlasifikasiController extends Controller
         $naiveBayes = new NaiveBayes();
         $status = $naiveBayes->klasifikasi($request->jk, $request->umur, $request->berat_badan, $request->tinggi_badan);
 
-        $data = Klasifikasi::create([
+        Klasifikasi::create([
             'nama' => $request->nama,
             'jk' => $request->jk,
             'umur' => $request->umur,
@@ -49,16 +49,18 @@ class KlasifikasiController extends Controller
             'status' => $status
         ]);
 
+        return redirect()->route('klasifikasi.list')->with('success', 'data berhasil ditambahkan');
+    }
 
-        // session(['nama' => $request->nama]);
+    public function destroy($id)
+    {
+        Klasifikasi::findOrFail($id)->delete();
+        return redirect(route('klasifikasi.list'))->with('success', 'Data Balita berhasil dihapus');
+    }
 
-        if ($data) {
-            return redirect()->route('klasifikasi.list')->with('pesan', 'data berhasil ditambahkan');
-        } else {
-            echo "<script>
-            alert('Data gagal diinput, masukkan kembali data dengan benar');
-            window.location = '/';
-            </script>";
-        }
+    public function prune()
+    {
+        Klasifikasi::truncate();
+        return redirect()->route('klasifikasi.list')->with('success', 'berhasil menghapus semua data.');
     }
 }

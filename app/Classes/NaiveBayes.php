@@ -3,11 +3,14 @@
 namespace App\Classes;
 
 use App\Models\DataBalita;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class NaiveBayes
 {
     public function klasifikasi($jk, $umur, $berat_badan, $tinggi_badan)
     {
+        $jk = $jk == 'Laki-Laki' ? 'L' : 'P';
         $input = [
             "jk" => $jk,
             "umur" => $umur,
@@ -24,9 +27,11 @@ class NaiveBayes
 
         $hasil = "status";
         $hasil_value = ["NORMAL", "STUNTING"];
+        $select = implode(',', [...$kriteria, $hasil]);
+        $data_train = DB::table('data_balita')->selectRaw($select)->get();
 
         $data_train_normal = [];
-        foreach (DataBalita::all() as $value) {
+        foreach ($data_train as $value) {
             $data = [];
             $data['jk'] = $value->jk;
             $data['umur'] = $value->umur;
@@ -38,7 +43,7 @@ class NaiveBayes
 
         $prob_true = [];
         $prob_false = [];
-        foreach ($kriteria as $key => $value) {
+        foreach ($kriteria as $value) {
             $prob_true[] = $this->getProbabilities($data_train_normal, [
                 $value => $input[$value],
                 $hasil => $hasil_value[1]
@@ -63,8 +68,8 @@ class NaiveBayes
             number_format(array_product($prob_false) * $prob_hasil_false, 10)
         ];
 
-        $status = ($hasil[0] >= $hasil[1]) ? $hasil_value[1] : $hasil_value[0];
 
+        $status = ($hasil[0] >= $hasil[1]) ? $hasil_value[1] : $hasil_value[0];
         return $status;
     }
 
@@ -79,10 +84,12 @@ class NaiveBayes
             $iya = 0;
             foreach ($rules as $y => $value) {
                 if ($v[$y] == $value) $iya += 1;
-                else $iya -= 1;
             }
+            Log::debug($iya);
             $hasil += ($iya == count($rules)) ? 1 : 0;
         }
+
+
 
         return $hasil / count($data);
     }

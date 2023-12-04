@@ -25,14 +25,14 @@ class TesterController extends Controller
     public function process(Request $request)
     {
         $hasil = [];
-        $data_testing = $request->total_data - $request->training;
-        $data_latih = DataBalita::skip($request->training)->limit($data_testing)->get();
+        $data_latih = DataBalita::limit($request->testing)->get();
         $naiveBayes = new NaiveBayes();
 
         foreach ($data_latih as $value) {
             $hasil[] = ["id_data_balita" => $value->id, "hasil" => $naiveBayes->klasifikasi($value->jk, $value->umur, $value->berat_badan, $value->tinggi_badan)];
         }
 
+        Tester::truncate();
         foreach ($hasil as $value) {
             Tester::create($value);
         }
@@ -46,8 +46,6 @@ class TesterController extends Controller
         $true_negatif = 0;
         $false_positif = 0;
         $false_negatif = 0;
-
-        Log::debug($data);
 
         foreach ($data as $item) {
             if ($item->dataBalita->status === "STUNTING") {

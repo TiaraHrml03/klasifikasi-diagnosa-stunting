@@ -40,7 +40,7 @@ return [
     */
 
     'debug' => (bool) env('APP_DEBUG', false),
-    'DEBUGBAR_ENABLED' => (bool) env('APP_DEBUG', false),
+    'DEBUGBAR_ENABLED' => (bool) env('DEBUGBAR_ENABLED', false),
 
     /*
     |--------------------------------------------------------------------------
