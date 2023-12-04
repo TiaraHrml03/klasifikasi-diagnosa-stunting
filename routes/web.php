@@ -9,6 +9,7 @@ use App\Http\Controllers\TesterController;
 use App\Models\Klasifikasi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Row;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,13 +22,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
+
+
 
 //dashboard
 Route::get('/', function () {
     return redirect('/dashboard');
 });
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+Auth::routes();
 
 
 //data balita

@@ -60,7 +60,7 @@ class DataBalitaController extends Controller
             $filename = time() . '-data-bayi.' . $file->getClientOriginalExtension();
             $file->storeAs('public/uploads', $filename);
             DataBayiJob::dispatch($filename);
-            return redirect()->back()->with(['success' => 'Import Data Bayi Dijadwalkan!']);
+            return redirect()->back()->with(['success' => 'Import Data Balita Dijadwalkan!']);
         }
     }
 
